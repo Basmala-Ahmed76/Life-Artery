@@ -1,0 +1,198 @@
+@model Life_Artery1.ViewModels.BloodBankRegisterViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blood Bank Registration – Life Artery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div class="auth-bg"></div>
+    <div class="auth-gradient"></div>
+    <div class="decor-drop" style="width:180px;height:180px;top:8%;left:4%;transform:rotate(-45deg);"></div>
+    <div class="decor-drop" style="width:110px;height:110px;bottom:12%;right:6%;transform:rotate(135deg);"></div>
+    <div class="decor-drop" style="width:70px;height:70px;top:42%;right:18%;transform:rotate(-20deg);"></div>
+
+    <!-- NAV -->
+    <nav class="auth-nav">
+        <a asp-controller="Home" asp-action="Index" class="auth-nav-brand">🩸 Life Artery</a>
+        <div class="nav-actions">
+            <a asp-controller="Home" asp-action="Index" class="nav-back"><i class="bi bi-arrow-left"></i> <span id="txt-back" data-i18n="auth_back_home">Back to Home</span></a>
+            <button class="lang-toggle" onclick="toggleLang()"><i class="bi bi-translate"></i><span id="langLabel" data-i18n="lang_switch">العربية</span></button>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-card" id="authCard">
+
+            <!-- TABS -->
+            <div class="auth-tabs">
+                <button class="auth-tab active"><span id="txt-tab-signup" data-i18n="nav_signup">Sign Up</span></button>
+            </div>
+
+            <div class="auth-panel active" id="panelSignup">
+                <!-- BLOOD BANK FORM -->
+                <div id="formBloodBank">
+                    <div class="step-progress"><div class="step-fill" style="width:100%"></div></div>
+                    <div class="card-brand" style="margin-bottom:14px;">
+                        <div class="card-brand-icon">🩸</div>
+                        <div class="card-brand-title" id="txt-bb-title" data-i18n="reg_bb_title">Blood Bank Registration</div>
+                        <div class="card-brand-sub" id="txt-bb-sub" data-i18n="reg_facility_sub">Official facility information</div>
+                    </div>
+                    <div class="auth-alert error" id="bbAlert"><i class="bi bi-exclamation-circle-fill"></i><span id="bbAlertMsg"></span></div>
+                    <div class="auth-alert success" id="bbSuccess"><i class="bi bi-check-circle-fill"></i><span id="txt-reg-ok-bb" data-i18n="reg_created_redirect">Account created! Redirecting…</span></div>
+                    <form asp-action="BloodBankRegister" asp-controller="Account" method="post" enctype="multipart/form-data">
+                        <div class="form-section-label" id="txt-bb-sec1" data-i18n="sec_facility_info">Facility Information</div>
+                        <div class="row g-2">
+                            <div class="col-12">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbname-lbl" data-i18n="bb_name">Blood Bank Name</label>
+                                    <input asp-for="Name" class="auth-input" placeholder="Central Blood Bank – Cairo" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bblicense-lbl" data-i18n="bb_license">License Number</label>
+                                    <input asp-for="LicenseNumber" class="auth-input" placeholder="BB-2024-XXXXX" />
+                                    <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbissuer-lbl" data-i18n="bb_issuer">Issuing Authority</label>
+                                    <select asp-for="IssuingAuthority" class="auth-select">
+                                        <option value="" disabled selected id="txt-select" data-i18n="select_placeholder">Select…</option>
+                                        <option value="MOH" id="txt-moh" data-i18n="moh_option">Ministry of Health</option>
+                                        <option value="HIO" id="txt-hio" data-i18n="hio_option">Health Insurance Org.</option>
+                                        <option value="Other" id="txt-other" data-i18n="other_option">Other</option>
+                                    </select>
+                                    <span asp-validation-for="IssuingAuthority" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bblicfile-lbl" data-i18n="reg_lic_doc_label">License Document (PDF / Image)</label>
+                                    <div class="file-wrap" onclick="document.getElementById('bbLicFile').click()">
+                                        <i class="bi bi-file-earmark-arrow-up file-icon"></i>
+                                        <label class="file-lbl" id="bbLicFileLabel" data-i18n="click_upload">Click to upload…</label>
+                                        <input asp-for="LicenseDocument"
+                                               type="file"
+                                               id="bbLicFile"
+                                               accept=".pdf,.jpg,.jpeg,.png"
+                                               onchange="updateFileLabel(this,'bbLicFileLabel')" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section-label" id="txt-bb-sec2" data-i18n="loc_contact_section">Location & Contact</div>
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbgov-lbl" data-i18n="bb_governorate">Governorate</label>
+                                    <input asp-for="Governorate" class="auth-input" placeholder="Cairo" />
+                                    <span asp-validation-for="Governorate" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbcity-lbl" data-i18n="reg_city_district">City / District</label>
+                                    <input asp-for="City" class="auth-input" placeholder="Nasr City" />
+                                    <span asp-validation-for="City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbstreet-lbl" data-i18n="bb_address">Street Address</label>
+                                    <input asp-for="Address" class="auth-input" placeholder="15 El-Nasr St." />
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbphone-lbl" data-i18n="bb_phone_label">Official Phone</label>
+                                    <input asp-for="PhoneNumber" class="auth-input" placeholder="02XXXXXXXX" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbemail-lbl" data-i18n="bb_email_label">Official Email</label>
+                                    <input asp-for="Email" class="auth-input" placeholder="info@bank.eg" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbgps-lbl" data-i18n="reg_gps_label">GPS / Google Maps Link</label>
+                                    <input asp-for="GoogleMapsLink" class="auth-input" placeholder="30.0444° N, 31.2357° E" />
+                                    <span asp-validation-for="GoogleMapsLink" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section-label" id="txt-bb-sec3" data-i18n="operations_section">Operations</div>
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbhours-from-lbl" data-i18n="work_hours_from">Working Hours — From</label>
+                                    <input asp-for="WorkingHoursFrom" class="auth-input" type="time" />
+                                    <span asp-validation-for="WorkingHoursFrom" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbhours-to-lbl" data-i18n="work_hours_to">To</label>
+                                    <input asp-for="WorkingHoursTo" class="auth-input" type="time" />
+                                    <span asp-validation-for="WorkingHoursTo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="auth-field">
+                                    <label class="auth-label" id="txt-bbmanager-lbl" data-i18n="bb_manager">Manager / Director Name</label>
+                                    <input asp-for="ManagerName" class="auth-input" placeholder="Dr. Ahmed Hassan" />
+                                    <span asp-validation-for="ManagerName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-section-label" data-i18n="acct_info_section">Account Information</div>
+                        <div class="auth-field">
+                            <label class="auth-label" data-i18n="bb_acct_owner">Account Owner Name</label>
+                            <input asp-for="FullName" class="auth-input" placeholder="Ahmed Mohamed" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="form-section-label" id="txt-bb-sec4" data-i18n="acct_security_section">Account Security</div>
+                        <div class="auth-field">
+                            <label class="auth-label" id="txt-bb-pass-lbl" data-i18n="bb_new_pass">Password</label>
+                            <div class="input-group-auth">
+                                <input asp-for="Password" type="password" class="auth-input" id="bbPass" />
+                                <button type="button" class="toggle-pass" onclick="togglePass('bbPass',this)"><i class="bi bi-eye-slash"></i></button>
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="auth-field">
+                            <label class="auth-label" id="txt-bb-pass-confirm-lbl" data-i18n="confirm_password">Confirm Password</label>
+                            <div class="input-group-auth">
+                                <input asp-for="ConfirmPassword" type="password" class="auth-input" id="bbPassConfirm" />
+                                <button type="button" class="toggle-pass" onclick="togglePass('bbPassConfirm',this)"><i class="bi bi-eye-slash"></i></button>
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <button type="submit" class="auth-btn" id="txt-bb-register-btn" data-i18n="reg_bb_btn">Register Blood Bank →</button>
+                        <button type="button" class="auth-btn-outline" onclick="window.location.href='/Account/Register'" id="txt-bb-back-role" data-i18n="change_role_btn">← Change Role</button>
+                    </form>
+                </div>
+            </div><!-- /panelSignup -->
+
+        </div><!-- /auth-card -->
+    </div><!-- /auth-wrapper -->
+    <script src="~/js/main.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>
