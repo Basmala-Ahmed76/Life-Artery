@@ -118,6 +118,7 @@ LifeArtery provides a digital solution that helps:
 
 ## 🏗️ Project Structure
 
+```text
 LifeArtery
 │
 ├── Controllers
@@ -129,6 +130,7 @@ LifeArtery
 ├── wwwroot
 ├── Program.cs
 └── appsettings.json
+```
 
 ## 🔐 Security
 
@@ -150,9 +152,11 @@ The project implements:
 
 ---
 
-## 🌐 Demo
+## 🌐 Live Demo
 
-Coming soon.
+🚀 Try Life Artery online:
+
+👉 https://mostafadesha-001-site1.itempurl.com/
 
 ---
 
