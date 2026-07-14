@@ -59,14 +59,17 @@ LifeArtery provides a digital solution that helps:
 ### ℹ️ About
 ![About](wwwroot/images/About.jpg)
 
+### 🔍 Search Blood
+![Search Blood](wwwroot/images/SearchBlood.jpg)
+
+### 📞 Contact
+![Contact](wwwroot/images/Contact.jpg)
+
 ### 🔐 Sign In
 ![Sign In](wwwroot/images/Sign-In.jpg)
 
 ### 📝 Sign Up
 ![Sign Up](wwwroot/images/Sign-Up.jpg)
-
-### 🔍 Search Blood
-![Search Blood](wwwroot/images/SearchBlood.jpg)
 
 ### 🏥 Hospital Registration
 ![Hospital Registration](wwwroot/images/Hospital-Registration.jpg)
@@ -82,9 +85,6 @@ LifeArtery provides a digital solution that helps:
 
 ### 👨‍💼 Admin Dashboard
 ![Admin Dashboard](wwwroot/images/Admin-Dashboard.jpg)
-
-### 📞 Contact
-![Contact](wwwroot/images/Contact.jpg)
 
 ---
 
